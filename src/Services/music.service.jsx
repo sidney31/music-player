@@ -21,7 +21,7 @@ export class MusicService {
       MUSICS.map(async (music) => {
         return this.getMusicInfoByUrl(music.src).then((tags) => {
           return new Music(
-            this.generateCover(tags.cover),
+            this.generateCover(tags.picture),
             tags.title,
             tags.artist,
             music.src

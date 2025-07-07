@@ -14,7 +14,7 @@ export default function MusicComponent({ music }) {
       <div>
         <img
           src={music.getCover()}
-          className="h-[48px] w-[48px] rounded bg-stone-200"
+          className="h-[48px] w-[48px] rounded bg-stone-200 object-fill"
         />
       </div>
       <div className="ms-3">
