@@ -1,0 +1,11 @@
+.main_tab {
+  height: calc(100svh - 112px);
+  background-color: var(--tab-color);
+  border-radius: 18px;
+  margin: 12px;
+  padding: 12px;
+  border: var(--border-color) 1px solid;
+  flex-grow: 1;
+
+  overflow: auto;
+}
