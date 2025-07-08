@@ -1,3 +1,5 @@
+@use "tailwindcss";
+
 .player_wrapper {
   width: 100svw;
   height: 100px;
@@ -51,14 +53,24 @@
   }
 
   & > .music_artist {
-    color: --color-stone-400;
+    color: var(--color-stone-400);
     transition: all 0.3s ease;
 
     &:hover {
-      color: --color-stone-800;
+      color: rgb(194, 194, 194);
     }
   }
 }
 .music_controls {
   display: flex;
+
+  & > button > * {
+    transition: all 0.2s ease-in-out;
+    border-radius: 100%;
+    aspect-ratio: 1;
+  }
+
+  & > button > *:hover {
+    color: gray;
+  }
 }

@@ -16,6 +16,8 @@ export class Music {
 }
 
 export class MusicService {
+  static setNextMusic = () => {};
+
   static getAllMusic = () => {
     return Promise.all(
       MUSICS.map(async (music) => {

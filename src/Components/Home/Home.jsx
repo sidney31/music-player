@@ -7,13 +7,20 @@ import { useState } from "react";
 import styles from "./Home.module.scss";
 import { MusicService } from "@Services/music.service";
 import { useEffect } from "react";
+import { MusicQueue } from "@/Services/queue.service";
 
 export function Home() {
   const [musicList, setMusicList] = useState([]);
+  // const [musicQueue, setMusicQueue] = useState();
 
   useEffect(() => {
     MusicService.getAllMusic().then(setMusicList).catch(console.error);
   }, []);
+
+  // useEffect(() => {
+  //   setMusicQueue(new MusicQueue());
+  //   musicList.map((music) => musicQueue.append(music));
+  // }, [musicList]);
 
   return (
     <div className="flex flex-row w-[100svw]">

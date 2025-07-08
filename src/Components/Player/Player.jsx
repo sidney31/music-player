@@ -7,12 +7,30 @@ import { CgPlayTrackNext } from "react-icons/cg";
 import { CgPlayTrackPrev } from "react-icons/cg";
 import { LuShuffle } from "react-icons/lu";
 import { LuRepeat } from "react-icons/lu";
+import { useEffect } from "react";
+import { MusicQueue } from "@/Services/queue.service";
+import { MusicService } from "@/Services/music.service";
 
 export function Player() {
-  const { currentMusic, setCurentMusic } = useContext(CurrentMusicContext);
+  const { currentMusic, setCurrentMusic } = useContext(CurrentMusicContext);
   const [isPaused, setPause] = useState(true);
+  const [musicList, setMusicList] = useState([]);
+  const [musicQueue, setMusicQueue] = useState();
 
-  if (currentMusic)
+  useEffect(() => {
+    MusicService.getAllMusic()
+      .then((newMusicList) => {
+        const newQueue = new MusicQueue();
+        newMusicList.forEach((music) => newQueue.append(music));
+        setMusicQueue(newQueue);
+        setMusicList(newMusicList);
+        setCurrentMusic(newQueue.current.current);
+      })
+      .catch(console.error);
+  }, []);
+
+  if (currentMusic) {
+    console.log(currentMusic);
     return (
       <div className={styles.player_wrapper}>
         <div className={styles.player}>
@@ -27,20 +45,40 @@ export function Player() {
             <button>
               <LuShuffle size={20} />
             </button>
-            <button>
+            <button
+              onClick={() => {
+                setCurrentMusic(
+                  musicQueue?.find(currentMusic).previous.current
+                );
+              }}
+            >
               <CgPlayTrackPrev size={30} />
             </button>
             <button onClick={() => setPause(!isPaused)}>
               {(isPaused && <FaPlay size={25} />) || <FaPause size={25} />}
             </button>
-            <button>
+            <button
+              onClick={() => {
+                setCurrentMusic(musicQueue?.find(currentMusic).next.current);
+              }}
+            >
               <CgPlayTrackNext size={30} />
             </button>
             <button>
-              <LuRepeat size={20} />
+              <LuRepeat size={20} style={{ fontWeight: 500 }} />
             </button>
           </div>
           {/* <div className={styles.music_settings}></div> */}
+        </div>
+      </div>
+    );
+  } else
+    return (
+      <div className={styles.player_wrapper}>
+        <div className={styles.player}>
+          <div className="w-[100%] h-[100%] text-center content-center font-semibold text-neutral-800">
+            Воспроизведение не началось
+          </div>
         </div>
       </div>
     );

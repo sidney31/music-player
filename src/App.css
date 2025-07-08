@@ -1,9 +1,15 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "NotoSans";
+  src: local("NotoSans-VariableFont"),
+    url("./Fonts/NotoSans-VariableFont_wdth,wght.ttf") format("truetype");
+}
+
 :root {
   --text-color: rgb(145, 145, 145);
-  --bg-color: rgb(13, 13, 13);
-  --tab-color: rgb(18, 18, 18);
+  --bg-color: rgb(14, 13, 13);
+  --tab-color: rgb(19, 18, 18);
   --border-color: rgb(30, 30, 30);
   --white-color: #edefef;
 }
