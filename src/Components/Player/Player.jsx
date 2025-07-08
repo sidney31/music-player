@@ -14,6 +14,8 @@ import { MusicService } from "@/Services/music.service";
 export function Player() {
   const { currentMusic, setCurrentMusic } = useContext(CurrentMusicContext);
   const [isPaused, setPause] = useState(true);
+  const [isShuffled, setShuffle] = useState(false);
+  const [isRepeated, setRepeat] = useState(false);
   const [musicList, setMusicList] = useState([]);
   const [musicQueue, setMusicQueue] = useState();
 
@@ -29,8 +31,9 @@ export function Player() {
       .catch(console.error);
   }, []);
 
+  useEffect(() => console.log(isRepeated), [isRepeated]);
+
   if (currentMusic) {
-    console.log(currentMusic);
     return (
       <div className={styles.player_wrapper}>
         <div className={styles.player}>
@@ -42,8 +45,15 @@ export function Player() {
             </div>
           </div>
           <div className={styles.music_controls}>
-            <button>
-              <LuShuffle size={20} />
+            <button onClick={() => setShuffle(!isShuffled)}>
+              {isShuffled ? (
+                <LuShuffle
+                  size={20}
+                  style={{ strokeWidth: "3px", color: "var(--white-color)" }}
+                />
+              ) : (
+                <LuShuffle size={20} />
+              )}
             </button>
             <button
               onClick={() => {
@@ -58,14 +68,21 @@ export function Player() {
               {(isPaused && <FaPlay size={25} />) || <FaPause size={25} />}
             </button>
             <button
-              onClick={() => {
-                setCurrentMusic(musicQueue?.find(currentMusic).next.current);
-              }}
+              onClick={() =>
+                setCurrentMusic(musicQueue?.find(currentMusic).next.current)
+              }
             >
               <CgPlayTrackNext size={30} />
             </button>
-            <button>
-              <LuRepeat size={20} style={{ fontWeight: 500 }} />
+            <button onClick={() => setRepeat(!isRepeated)}>
+              {isRepeated ? (
+                <LuRepeat
+                  size={20}
+                  style={{ strokeWidth: "3px", color: "var(--white-color)" }}
+                />
+              ) : (
+                <LuRepeat size={20} />
+              )}
             </button>
           </div>
           {/* <div className={styles.music_settings}></div> */}

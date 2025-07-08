@@ -45,6 +45,7 @@
   margin-left: 10px;
   font-weight: 600;
   font-size: 18px;
+  cursor: pointer;
 
   & > * {
     white-space: nowrap;
@@ -64,13 +65,20 @@
 .music_controls {
   display: flex;
 
-  & > button > * {
-    transition: all 0.2s ease-in-out;
-    border-radius: 100%;
-    aspect-ratio: 1;
+  & > button {
+    width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(190, 190, 190);
   }
 
-  & > button > *:hover {
-    color: gray;
+  & > button > * {
+    transition: all 0.2s ease-in-out;
+    flex: 0 0 auto;
+  }
+
+  & > button:hover {
+    color: var(--color-white);
   }
 }
