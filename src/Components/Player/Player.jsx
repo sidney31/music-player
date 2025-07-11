@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import styles from "./Player.module.scss";
 import { CurrentMusicContext } from "@Providers/CurrentMusicContextProvider";
 import { FaPlay } from "react-icons/fa6";
@@ -13,11 +13,20 @@ import { MusicService } from "@/Services/music.service";
 
 export function Player() {
   const { currentMusic, setCurrentMusic } = useContext(CurrentMusicContext);
-  const [isPaused, setPause] = useState(true);
   const [isShuffled, setShuffle] = useState(false);
   const [isRepeated, setRepeat] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [musicList, setMusicList] = useState([]);
   const [musicQueue, setMusicQueue] = useState();
+  const audioRef = useRef(null);
+
+  useEffect(() => {
+    const music = audioRef.current;
+    if (!music) return;
+    music.setAttribute("src", currentMusic.src);
+    music.load();
+    music.play();
+  }, [currentMusic]);
 
   useEffect(() => {
     MusicService.getAllMusic()
@@ -31,7 +40,12 @@ export function Player() {
       .catch(console.error);
   }, []);
 
-  useEffect(() => console.log(isRepeated), [isRepeated]);
+  const playOrPauseMusic = () => {
+    const music = audioRef.current;
+    setIsPlaying(!isPlaying);
+    if (isPlaying) music.pause();
+    else music.play();
+  };
 
   if (currentMusic) {
     return (
@@ -64,8 +78,12 @@ export function Player() {
             >
               <CgPlayTrackPrev size={30} />
             </button>
-            <button onClick={() => setPause(!isPaused)}>
-              {(isPaused && <FaPlay size={25} />) || <FaPause size={25} />}
+            <button
+              onClick={() => {
+                playOrPauseMusic();
+              }}
+            >
+              {(isPlaying && <FaPause size={25} />) || <FaPlay size={25} />}
             </button>
             <button
               onClick={() =>
@@ -86,6 +104,13 @@ export function Player() {
             </button>
           </div>
           {/* <div className={styles.music_settings}></div> */}
+          <audio
+            ref={audioRef}
+            src=""
+            className="hidden"
+            onPlay={() => setIsPlaying(true)}
+            onPause={() => setIsPlaying(false)}
+          />
         </div>
       </div>
     );

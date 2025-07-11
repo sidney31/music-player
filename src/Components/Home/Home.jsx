@@ -11,36 +11,30 @@ import { MusicQueue } from "@/Services/queue.service";
 
 export function Home() {
   const [musicList, setMusicList] = useState([]);
-  // const [musicQueue, setMusicQueue] = useState();
 
   useEffect(() => {
     MusicService.getAllMusic().then(setMusicList).catch(console.error);
   }, []);
 
-  // useEffect(() => {
-  //   setMusicQueue(new MusicQueue());
-  //   musicList.map((music) => musicQueue.append(music));
-  // }, [musicList]);
-
   return (
     <div className="flex flex-row w-[100svw]">
       <nav className="w-[200px] h-[100svh] flex flex-col p-4 px-[30px]">
         <img className="" src="logo.png" alt="" />
-        <ul className="nav_links flex flex-col gap-[24px] mt-[32px] text-[var(--text-color)] font-medium">
+        <ul className={styles.nav_links}>
           <li>
-            <IoSearchSharp />
+            <IoSearchSharp size={25} />
             Поиск
           </li>
           <li>
-            <IoIosMusicalNotes />
+            <IoIosMusicalNotes size={25} />
             Главная
           </li>
           <li>
-            <LuPodcast />
+            <LuPodcast size={25} />
             Подкасты и книги
           </li>
           <li className="text-[var(--white-color)]">
-            <MdFavorite />
+            <MdFavorite size={25} />
             Коллекция
           </li>
         </ul>

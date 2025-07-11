@@ -9,6 +9,7 @@ export default function MusicComponent({ music }) {
       className="font-semibold hover:bg-zinc-800 rounded-2xl p-2 mt-3 flex items-center cursor-pointer"
       onClick={() => {
         setCurrentMusic(music);
+        // audio.play();
       }}
     >
       <div>
