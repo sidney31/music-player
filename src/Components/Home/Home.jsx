@@ -3,15 +3,13 @@ import { IoIosMusicalNotes } from "react-icons/io";
 import { LuPodcast } from "react-icons/lu";
 import { MdFavorite } from "react-icons/md";
 import MusicComponent from "@Components/Music/Music";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import styles from "./Home.module.scss";
 import { MusicService } from "@Services/music.service";
 import { useEffect } from "react";
-import { MusicQueue } from "@/Services/queue.service";
 
 export function Home() {
   const [musicList, setMusicList] = useState([]);
-
   useEffect(() => {
     MusicService.getAllMusic().then(setMusicList).catch(console.error);
   }, []);

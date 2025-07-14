@@ -1,6 +1,6 @@
 import { useContext, useRef, useState } from "react";
 import styles from "./Player.module.scss";
-import { CurrentMusicContext } from "@Providers/CurrentMusicContextProvider";
+import { PlayerContext } from "@Providers/PlayerContextProvider";
 import { FaPlay } from "react-icons/fa6";
 import { FaPause } from "react-icons/fa6";
 import { CgPlayTrackNext } from "react-icons/cg";
@@ -12,21 +12,13 @@ import { MusicQueue } from "@/Services/queue.service";
 import { MusicService } from "@/Services/music.service";
 
 export function Player() {
-  const { currentMusic, setCurrentMusic } = useContext(CurrentMusicContext);
+  const { isPlaying, setPlaying, currentMusic, setCurrentMusic } =
+    useContext(PlayerContext);
   const [isShuffled, setShuffle] = useState(false);
   const [isRepeated, setRepeat] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [musicList, setMusicList] = useState([]);
   const [musicQueue, setMusicQueue] = useState();
-  const audioRef = useRef(null);
-
-  useEffect(() => {
-    const music = audioRef.current;
-    if (!music) return;
-    music.setAttribute("src", currentMusic.src);
-    music.load();
-    music.play();
-  }, [currentMusic]);
+  const audioRef = useRef();
 
   useEffect(() => {
     MusicService.getAllMusic()
@@ -40,11 +32,33 @@ export function Player() {
       .catch(console.error);
   }, []);
 
-  const playOrPauseMusic = () => {
+  useEffect(() => {
     const music = audioRef.current;
-    setIsPlaying(!isPlaying);
-    if (isPlaying) music.pause();
-    else music.play();
+    if (!music) return;
+    music.setAttribute("src", currentMusic.src);
+    music.load();
+    music.play();
+    setPlaying(true);
+  }, [currentMusic]);
+
+  useEffect(() => {
+    const music = audioRef.current;
+    if (!music) return;
+
+    if (isPlaying) music.play();
+    else music.pause();
+  }, [isPlaying]);
+
+  const setNextMusic = () => {
+    setCurrentMusic(musicQueue?.find(currentMusic).next.current);
+  };
+
+  const setThisMusic = () => {
+    setCurrentMusic(musicQueue?.find(currentMusic).current);
+  };
+
+  const setPreviousMusic = () => {
+    setCurrentMusic(musicQueue?.find(currentMusic).previous.current);
   };
 
   if (currentMusic) {
@@ -71,25 +85,19 @@ export function Player() {
             </button>
             <button
               onClick={() => {
-                setCurrentMusic(
-                  musicQueue?.find(currentMusic).previous.current
-                );
+                setPreviousMusic();
               }}
             >
               <CgPlayTrackPrev size={30} />
             </button>
             <button
               onClick={() => {
-                playOrPauseMusic();
+                setPlaying(!isPlaying);
               }}
             >
               {(isPlaying && <FaPause size={25} />) || <FaPlay size={25} />}
             </button>
-            <button
-              onClick={() =>
-                setCurrentMusic(musicQueue?.find(currentMusic).next.current)
-              }
-            >
+            <button onClick={() => setNextMusic()}>
               <CgPlayTrackNext size={30} />
             </button>
             <button onClick={() => setRepeat(!isRepeated)}>
@@ -106,10 +114,11 @@ export function Player() {
           {/* <div className={styles.music_settings}></div> */}
           <audio
             ref={audioRef}
-            src=""
+            src={null}
             className="hidden"
-            onPlay={() => setIsPlaying(true)}
-            onPause={() => setIsPlaying(false)}
+            onPlay={() => setPlaying(true)}
+            onPause={() => setPlaying(false)}
+            onEnded={() => (isRepeated ? setThisMusic() : setNextMusic())}
           />
         </div>
       </div>

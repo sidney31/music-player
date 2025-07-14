@@ -1,5 +1,8 @@
-.music_cover:not(.play)::before {
-  content: "";
+.music_cover::before {
+  color: black;
+  font-size: 8px;
+  align-content: center;
+  text-align: center;
   height: 24px;
   aspect-ratio: 1;
   display: block;
@@ -12,23 +15,16 @@
   opacity: 0;
 }
 
-.music_card_wrapper:hover > .music_cover:not(.play)::before {
-  opacity: 1;
-}
-
-.music_cover {
-  //   + h-[48px] w-[48px] rounded bg-stone-200 object-fill
-  height: 48px;
-  aspect-ratio: 1;
-  border-radius: 0.2rem;
-  background: var(--bg-stone-200);
-  object-fit: fill;
-  position: relative;
-  transition: all 0.3s ease-in-out;
-
-  &::before {
-    transition: all 0.3s ease-in-out;
+.music_card_wrapper:hover {
+  & > .music_cover.play.pause::before,
+  & > .music_cover::before {
+    opacity: 1;
+    content: "play";
   }
+}
+.music_card_wrapper:hover > .music_cover.play:not(.pause)::before {
+  opacity: 1;
+  content: "pause";
 }
 
 .play::before {
@@ -42,6 +38,29 @@
   // transform: translate(50%, 50%);
   z-index: 1;
   animation: musicPlayAnimation 2s ease-in-out infinite;
+  opacity: 1;
+}
+
+.music_cover {
+  height: 48px;
+  aspect-ratio: 1;
+  border-radius: 0.2rem;
+  background: var(--bg-stone-200);
+  object-fit: fill;
+  position: relative;
+  transition: all 0.2s ease-in-out;
+
+  &::before {
+    transition: all 0.2s ease-in-out;
+  }
+
+  & > img {
+    transition: all 0.2s ease-in-out;
+  }
+}
+
+.music_card_wrapper:hover .music_cover > img {
+  filter: brightness(70%);
 }
 
 @keyframes musicPlayAnimation {

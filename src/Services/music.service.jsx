@@ -7,12 +7,21 @@ export class Music {
     this.title = title;
     this.artist = artist;
     this.src = src;
+    this.state = false;
   }
 
   getCover = () => this.cover;
   getTitle = () => this.title;
   getArtist = () => this.artist;
   getSrc = () => this.src;
+
+  get isPlaying() {
+    return this.state;
+  }
+
+  set isPlaying(state) {
+    this.state = state;
+  }
 }
 
 export class MusicService {

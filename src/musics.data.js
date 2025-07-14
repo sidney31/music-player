@@ -27,6 +27,9 @@ export const MUSICS = [
     src: "/music/Jakone_Kiliana_-_Asfalt_78008701.mp3",
   },
   {
+    src: "/music/zvuki_prirody_-_svinya_roetsya_v_komposte.mp3",
+  },
+  {
     src: "/music/Korol_i_SHut_-_Mjortvyjj_Anarkhist_62571796.mp3",
   },
 ];
